@@ -47,7 +47,7 @@ public class UserServlet extends HttpServlet {
                     break;
                 case "delete":
                 case "searchDelete":
-                    //resp.sendRedirect("user-delete.jsp");
+                    resp.sendRedirect("user-delete.jsp");
                     break;
             }
         } else {
@@ -89,7 +89,7 @@ public class UserServlet extends HttpServlet {
                     update(req,resp);
                     break;
                 case "delete":
-                    //delete(req,resp);
+                    delete(req,resp);
                     break;
                 case "searchUpdate":
                 case "searchDelete":
@@ -297,14 +297,22 @@ public class UserServlet extends HttpServlet {
 
     public void search(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user;
-        String username = req.getParameter("usernameUpdateSearch");
+
+        String username;
+        if(req.getParameter("servletParam").equals("searchUpdate")){
+            username = req.getParameter("usernameUpdateSearch");
+        }else if(req.getParameter("servletParam").equals("searchDelete")){
+            username = req.getParameter("usernameDeleteSearch");
+        }else{
+            username = req.getParameter("username");
+        }
         //RequestDispatcher dispatcher;
         try {
             String message = "";
             user = userDao.searchUserByUsername(username);
             req.setAttribute("user", user);
             if(user == null){
-                message = "Not user found!";
+                message = "User not found!";
             }
             req.setAttribute("message", message);
 
@@ -325,10 +333,14 @@ public class UserServlet extends HttpServlet {
             dispatcher = req.getRequestDispatcher("user-update.jsp");
             dispatcher.forward(req, resp);
             resp.sendRedirect("user-update.jsp");
-        }else{
+        }else if (req.getParameter("servletParam").equals("searchDelete")){
             dispatcher = req.getRequestDispatcher("user-delete.jsp");
             dispatcher.forward(req, resp);
             resp.sendRedirect("user-delete.jsp");
+        }else {
+//            dispatcher = req.getRequestDispatcher("index.jsp");
+//            dispatcher.forward(req, resp);
+            resp.sendRedirect("index.jsp");
         }
     }
 
@@ -374,9 +386,9 @@ public class UserServlet extends HttpServlet {
             if(userSearched != null){
                 user.setUserId(userSearched.getUserId());
                 if(userDao.update(user)) {
-                    message = "Username registered!";
+                    message = "Username updated!";
                 }else{
-                    message = "Username already exists!";
+                    message = "Error updating user!";
                 }
             } else{
                 message = "Username not found!";
@@ -394,6 +406,71 @@ public class UserServlet extends HttpServlet {
             dispatcher = req.getRequestDispatcher("user-update.jsp");
             dispatcher.forward(req, resp);
             resp.sendRedirect("user-update.jsp");
+        }
+    }
+
+    private void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        User user = new User();
+        User userSearched;
+        Address address = new Address();
+
+        String firstName = req.getParameter("firstName");
+        String lastName = req.getParameter("lastName");
+        String username = req.getParameter("username");
+        String email = req.getParameter("email");
+        int age = Integer.parseInt(req.getParameter("age"));
+        String phoneNumber = req.getParameter("phoneNumber");
+        int streetNumber = Integer.parseInt(req.getParameter("streetNumber"));
+        String streetName = req.getParameter("streetName");
+        String city = req.getParameter("city");
+        String stateProvince = req.getParameter("stateProvince");
+        String country = req.getParameter("country");
+        String postalCode = req.getParameter("postalCode");
+
+        //user.setUserId(User.getIdGenerator());
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setUsername(username);
+        user.setEmail(email);
+        user.setAge(age);
+        user.setPhoneNumber(phoneNumber);
+
+        address.setStreetNumber(streetNumber);
+        address.setStreetName(streetName);
+        address.setCity(city);
+        address.setStateProvince(stateProvince);
+        address.setCountry(country);
+        address.setPostalCode(postalCode);
+
+        user.setAddress(address);
+        RequestDispatcher dispatcher;
+
+        try {
+            String message = "";
+            userSearched = userDao.searchUserByUsername(username);
+            if(userSearched != null){
+                user.setUserId(userSearched.getUserId());
+                if(userDao.delete(user)) {
+                    message = "Username deleted!";
+                }else{
+                    message = "Error deleting the user!";
+                }
+            } else{
+                message = "Username not found!";
+            }
+
+            req.setAttribute("message", message);
+            dispatcher = req.getRequestDispatcher("user-delete.jsp");
+            dispatcher.forward(req, resp);
+            resp.sendRedirect("user-delete.jsp");
+
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            req.setAttribute("message", e.getMessage());
+            dispatcher = req.getRequestDispatcher("user-delete.jsp");
+            dispatcher.forward(req, resp);
+            resp.sendRedirect("user-delete.jsp");
         }
     }
 

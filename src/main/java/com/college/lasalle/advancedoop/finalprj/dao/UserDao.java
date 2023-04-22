@@ -252,14 +252,14 @@ public class UserDao {
 
     }
 
-    public boolean delete(String username) throws SQLException, ClassNotFoundException {
+    public boolean delete(User user) throws SQLException, ClassNotFoundException {
 
 //        Connection connection = DBConnection.getConnection();
         connection = DBConnection.getConnection();
 
-        User user = searchUserByUsername(username);
+        //User user = searchUserByUsername(username);
 
-        if(user != null){
+        if(searchUserById(user.getUserId()) != null){
 
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_USER);
 
