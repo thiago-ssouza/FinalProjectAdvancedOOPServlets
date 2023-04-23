@@ -1,6 +1,3 @@
-<%@ page import="java.util.List" %>
-<%@ page import="com.college.lasalle.advancedoop.finalprj.model.User" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: Thiago
@@ -8,6 +5,9 @@
   Time: 15:52
   To change this template use File | Settings | File Templates.
 --%>
+<%@ page import="java.util.List" %>
+<%@ page import="com.college.lasalle.advancedoop.finalprj.model.User" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -37,6 +37,7 @@
       line-height: 60px;
       background-color: #f5f5f5;
     }
+
   </style>
 
   <script>
@@ -46,8 +47,6 @@
       let message = null;
       message = '${pageContext.request.getAttribute("message")}';
 
-      // alert(typeof message)
-      // alert(message.length)
       // Check if error message exists and display as pop-up message
       if (message !== null && message !== "" && typeof message !== "undefined" && message.length > 0 && message != "null") {
         alert(message);
@@ -69,7 +68,7 @@
       <input type="hidden" name="servletParam" value="${servletParam}" />
       <input class="btn btn-primary" type="submit" value="List Users"/>
     </form>
-    <table class="table table-bordered table-hover container">
+    <table class="table table-bordered table-hover container table-sm">
       <thead>
       <tr>
         <th colspan="7">User Information</th>

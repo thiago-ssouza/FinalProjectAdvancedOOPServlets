@@ -8,8 +8,8 @@ public class DBConnection {
 
     private static Connection connection = null;
 
-    //private static final String dbName = "final_prj_db";
-    private static final String jdbcURL = "jdbc:mysql://localhost:3306/final_prj_db?autoReconnect=true&useSSL=false";
+    private static final String dbName = "final_prj_db";
+    private static final String jdbcURL = "jdbc:mysql://localhost:3306/"+ dbName + "?autoReconnect=true&useSSL=false";
     private static final String jdbcUsername = "root";
     private static final String jdbcPassword = "";
 

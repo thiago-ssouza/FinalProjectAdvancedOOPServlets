@@ -1,8 +1,12 @@
 package com.college.lasalle.advancedoop.finalprj.model;
 
+import com.college.lasalle.advancedoop.finalprj.dao.UserDao;
+
+import java.sql.SQLException;
+
 public class User {
 
-    private static int idGenerator = 1;
+    private static int idGenerator = 0;
 
     private int userId;
     private String firstName;
@@ -16,7 +20,6 @@ public class User {
     public User(){ }
 
     public User(String firstName, String lastName, String username, String email, int age, String phoneNumber, Address address) {
-        //this.userId = ++idGenerator;
 
         this.firstName = firstName;
         this.lastName = lastName;
@@ -27,7 +30,15 @@ public class User {
         this.address = address;
     }
 
-    public static int getIdGenerator() { return ++idGenerator; }
+    public static int getIdGenerator() throws SQLException, ClassNotFoundException {
+        int lastUserIdSequence;
+        if(idGenerator == 0){
+            UserDao userDao = new UserDao();
+            lastUserIdSequence = userDao.getUserIdAutoIncrementSequence();
+            idGenerator = lastUserIdSequence;
+        }
+        return ++idGenerator;
+    }
 
     public int getUserId() {
         return userId;

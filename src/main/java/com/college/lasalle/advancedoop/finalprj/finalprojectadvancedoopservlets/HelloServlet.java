@@ -2,7 +2,6 @@ package com.college.lasalle.advancedoop.finalprj.finalprojectadvancedoopservlets
 
 import java.io.*;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
@@ -23,12 +22,6 @@ public class HelloServlet extends HttpServlet {
         out.println("<h1>" + message + "</h1>");
         out.println("</body></html>");
     }
-
-//    @Override
-//    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        resp.setContentType("text/html");
-//        resp.sendRedirect("user-register.jsp");
-//    }
 
     public void destroy() {
     }

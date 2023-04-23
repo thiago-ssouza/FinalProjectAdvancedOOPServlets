@@ -50,12 +50,6 @@
 <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
 <script src="../../assets/js/vendor/popper.min.js"></script>
 <script src="../../dist/js/bootstrap.min.js"></script>
-<%--<h1><%= "Hello World!" %>--%>
-<%--</h1>--%>
-<%--<br/>--%>
-<%--<a href="hello-servlet">Hello Servlet</a>--%>
-<%--<a href="user-register.jsp">User Servlet</a>--%>
 
-<%--<c:redirect url="/user-register.jsp"/>--%>
 </body>
 </html>

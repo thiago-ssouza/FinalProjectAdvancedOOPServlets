@@ -19,10 +19,6 @@ public class UserDao {
 
     private final String SQL_SELECT_USER_BY_ID = "SELECT * FROM user WHERE userId = ?";
 
-//    private final String SQL_UPDATE_USER = "UPDATE user"
-//            + " SET firstName = ?, lastName = ?, username = ?, email = ?, age = ?, phoneNumber = ?, streetNumber = ?, streetName = ?, city = ?, stateProvince = ?, country = ?, postalCode = ?"
-//            + " WHERE userId = ?";
-
     private final String SQL_UPDATE_USER = "UPDATE user"
             + " SET firstName = ?, lastName = ?, email = ?, age = ?, phoneNumber = ?, streetNumber = ?, streetName = ?, city = ?, stateProvince = ?, country = ?, postalCode = ?"
             + " WHERE userId = ? AND username = ?";
@@ -31,15 +27,12 @@ public class UserDao {
 
     private final String SQL_SELECT_ALL_USERS = "SELECT * FROM user ORDER BY userId ASC";
 
-//    public UserDao() throws SQLException, ClassNotFoundException {
-//        connection = DBConnection.getConnection();
-//    }
+    private final String SQL_SELECT_USER_ID_INCREMENT_SEQUENCE = "SELECT userId FROM user ORDER BY userId DESC LIMIT 1";
 
     public UserDao(){}
 
     public boolean insert(User user) throws SQLException, ClassNotFoundException {
 
-//        Connection connection = DBConnection.getConnection();
         connection = DBConnection.getConnection();
 
         if(searchUserByUsername(user.getUsername()) == null){
@@ -69,9 +62,6 @@ public class UserDao {
         }
 
         return false;
-
-        //DBConnection.closeConnection();
-
     }
 
     public User searchUserByUsername(String username) throws SQLException, ClassNotFoundException {
@@ -79,7 +69,6 @@ public class UserDao {
         Address address;
         User user = null;
 
-//        Connection connection = DBConnection.getConnection();
         connection = DBConnection.getConnection();
 
         PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_USER_BY_USERNAME);
@@ -111,9 +100,6 @@ public class UserDao {
         }
 
         return user;
-
-        //DBConnection.closeConnection();
-
     }
 
     public User searchUserById(int userId) throws SQLException, ClassNotFoundException {
@@ -121,7 +107,6 @@ public class UserDao {
         Address address;
         User user = null;
 
-//        Connection connection = DBConnection.getConnection();
         connection = DBConnection.getConnection();
 
         PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_USER_BY_ID);
@@ -153,9 +138,6 @@ public class UserDao {
         }
 
         return user;
-
-        //DBConnection.closeConnection();
-
     }
 
     public List<User> selectAll() throws SQLException, ClassNotFoundException {
@@ -165,7 +147,6 @@ public class UserDao {
         Address address;
         User user;
 
-//        Connection connection = DBConnection.getConnection();
         connection = DBConnection.getConnection();
 
         PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_ALL_USERS);
@@ -198,32 +179,15 @@ public class UserDao {
 
         return userList;
 
-        //DBConnection.closeConnection();
-
     }
 
     public boolean update(User user) throws SQLException, ClassNotFoundException {
 
-//        Connection connection = DBConnection.getConnection();
         connection = DBConnection.getConnection();
 
         if(searchUserById(user.getUserId()) != null){
 
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_USER);
-
-//            preparedStatement.setString(1, user.getFirstName());
-//            preparedStatement.setString(2, user.getLastName());
-//            preparedStatement.setString(3, user.getUsername());
-//            preparedStatement.setString(4, user.getEmail());
-//            preparedStatement.setInt(5, user.getAge());
-//            preparedStatement.setString(6, user.getPhoneNumber());
-//            preparedStatement.setInt(7, user.getAddress().getStreetNumber());
-//            preparedStatement.setString(8, user.getAddress().getStreetName());
-//            preparedStatement.setString(9, user.getAddress().getCity());
-//            preparedStatement.setString(10, user.getAddress().getStateProvince());
-//            preparedStatement.setString(11, user.getAddress().getCountry());
-//            preparedStatement.setString(12, user.getAddress().getPostalCode());
-//            preparedStatement.setInt(13, user.getUserId());
 
             preparedStatement.setString(1, user.getFirstName());
             preparedStatement.setString(2, user.getLastName());
@@ -247,17 +211,11 @@ public class UserDao {
         }
 
         return false;
-
-        //DBConnection.closeConnection();
-
     }
 
     public boolean delete(User user) throws SQLException, ClassNotFoundException {
 
-//        Connection connection = DBConnection.getConnection();
         connection = DBConnection.getConnection();
-
-        //User user = searchUserByUsername(username);
 
         if(searchUserById(user.getUserId()) != null){
 
@@ -273,9 +231,23 @@ public class UserDao {
         }
 
         return false;
+    }
 
-        //DBConnection.closeConnection();
+    public int getUserIdAutoIncrementSequence() throws SQLException, ClassNotFoundException {
 
+        int userIdIncrementeSequence = 0;
+
+        connection = DBConnection.getConnection();
+
+        PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_USER_ID_INCREMENT_SEQUENCE);
+
+        ResultSet rs = preparedStatement.executeQuery();
+
+        if(rs.next()){
+            userIdIncrementeSequence = rs.getInt("userId");
+        }
+
+        return userIdIncrementeSequence;
     }
 
 }

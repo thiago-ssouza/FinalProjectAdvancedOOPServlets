@@ -38,8 +38,6 @@
       let message = null;
       message = '${pageContext.request.getAttribute("message")}';
 
-      // alert(typeof message)
-      // alert(message.length)
       // Check if error message exists and display as pop-up message
       if (message !== null && message !== "" && typeof message !== "undefined" && message.length > 0 && message != "null") {
         alert(message);
